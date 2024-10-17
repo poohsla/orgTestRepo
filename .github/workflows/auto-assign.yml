@@ -1,0 +1,27 @@
+name: Auto Assign
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto-assign reviewer and assignee
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+              reviewers: ['poohsla']
+            });
+            
+            github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              assignees: ['jinhwankim6557']
+            });
